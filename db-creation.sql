@@ -155,6 +155,8 @@ SELECT adv.id AS adv_id,
        rid.challenge_text AS rid_challenge,
        rid.response_text AS rid_response,
        rid.hint_text AS rid_hint,
+       cit.id AS cit_id,
+       cit.name AS cit_name,
        cag.id AS cag_id,
        cag.name AS cag_name,
        cag.text AS cag_text,
@@ -169,22 +171,25 @@ SELECT adv.id AS adv_id,
        obj.id AS obj_id,
        obj.name AS obj_name,
        obj.text AS obj_text
-FROM (((((((adventure adv
-            JOIN story sto)
-           JOIN scene sce)
-          JOIN scene_cache sca)
+FROM ((((((((adventure adv
+             JOIN story sto)
+            JOIN scene sce)
+           JOIN scene_cache sca)
+          JOIN city cit)
          JOIN cache_group cag)
         JOIN riddle rid)
-       JOIN cache cah)
-      JOIN object3d obj)
+       JOIN CACHE cah)
+      JOIN object3D obj)
 WHERE ((adv.id = sto.adventure_id)
        AND (sto.id = sce.story_id)
        AND (sce.id = sca.scene_id)
        AND (rid.id = sce.riddle_id)
+       AND (cit.id = cag.city_id)
        AND (cag.id = cah.cache_grp_id)
        AND (cah.id = sca.cache_id)
        AND (obj.id = sce.object3d_id))
-ORDER BY cag.id,
+ORDER BY cit.id,
+         cag.id,
          adv.id,
          sto.seq_nr,
          sce.seq_nr;
